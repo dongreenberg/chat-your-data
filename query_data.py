@@ -1,6 +1,7 @@
 from langchain.prompts.prompt import PromptTemplate
-from langchain.llms import OpenAI
+from langchain.llms import SelfHostedLLM
 from langchain.chains import ChatVectorDBChain
+import runhouse as rh
 
 _template = """Given the following conversation and a follow up question, rephrase the follow up question to be a standalone question.
 You can assume the question about the most recent state of the union address.
@@ -24,7 +25,8 @@ QA_PROMPT = PromptTemplate(template=template, input_variables=["question", "cont
 
 
 def get_chain(vectorstore):
-    llm = OpenAI(temperature=0)
+    gpu = rh.cluster(name="rh-a10x", instance_type="A100:1", use_spot=False)
+    llm = SelfHostedLLM(hardware=gpu)
     qa_chain = ChatVectorDBChain.from_llm(
         llm,
         vectorstore,
