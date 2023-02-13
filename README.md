@@ -1,4 +1,4 @@
-# Chat-Your-Data
+# Self-hosted Chat-Your-Data
 
 Create a ChatGPT like experience over your custom docs using [LangChain](https://github.com/hwchase17/langchain).
 
