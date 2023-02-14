@@ -25,8 +25,8 @@ QA_PROMPT = PromptTemplate(template=template, input_variables=["question", "cont
 
 
 def get_chain(vectorstore):
-    gpu = rh.cluster(name="rh-a10x", instance_type="A100:1", use_spot=False)
-    llm = SelfHostedLLM(hardware=gpu)
+    gpu = rh.cluster(name="rh-a10x")
+    llm = SelfHostedLLM.from_model_id(hardware=gpu, model_id="EleutherAI/gpt-neo-2.7B", task='text-generation')
     qa_chain = ChatVectorDBChain.from_llm(
         llm,
         vectorstore,
