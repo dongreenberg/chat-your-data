@@ -1,5 +1,5 @@
 from langchain.prompts.prompt import PromptTemplate
-from langchain.llms import SelfHostedLLM
+from langchain.llms import SelfHostedHuggingFaceLLM
 from langchain.chains import ChatVectorDBChain
 import runhouse as rh
 
@@ -26,7 +26,8 @@ QA_PROMPT = PromptTemplate(template=template, input_variables=["question", "cont
 
 def get_chain(vectorstore):
     gpu = rh.cluster(name="rh-a10x")
-    llm = SelfHostedLLM.from_model_id(hardware=gpu, model_id="EleutherAI/gpt-neo-2.7B", task='text-generation')
+    # llm = SelfHostedHuggingFaceLLM(hardware=gpu, model_id="EleutherAI/gpt-neo-2.7B", task='text-generation')
+    llm = SelfHostedHuggingFaceLLM(hardware=gpu)
     qa_chain = ChatVectorDBChain.from_llm(
         llm,
         vectorstore,
